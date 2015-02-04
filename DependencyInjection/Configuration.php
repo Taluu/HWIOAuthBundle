@@ -67,6 +67,7 @@ class Configuration implements ConfigurationInterface
         'oauth1' => array(
             'bitbucket',
             'dropbox',
+            'evernote',
             'flickr',
             'jira',
             'stereomood',
