@@ -25,6 +25,17 @@ class AzureResourceOwner extends GenericOAuth2ResourceOwner
     /**
      * {@inheritDoc}
      */
+    protected $paths = array(
+        'identifier'     => 'MailboxGuid',
+        'nickname'       => 'Alias',
+        'realname'       => 'DisplayName',
+        'email'          => 'Id',
+        'profilepicture' => null,
+    );
+
+    /**
+     * {@inheritDoc}
+     */
     public function configure()
     {
         $this->options['infos_url'] = sprintf($this->options['infos_url'], $this->options['resource'], $this->options['api_version']);
