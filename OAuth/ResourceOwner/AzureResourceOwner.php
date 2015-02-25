@@ -38,6 +38,8 @@ class AzureResourceOwner extends GenericOAuth2ResourceOwner
      */
     public function configure()
     {
+        $this->options['access_token_url'] = sprintf($this->options['access_token_url'], $this->options['application']);
+        $this->options['authorization_url'] = sprintf($this->options['authorization_url'], $this->options['application']);
         $this->options['infos_url'] = sprintf($this->options['infos_url'], $this->options['resource'], $this->options['api_version']);
     }
 
@@ -67,10 +69,11 @@ class AzureResourceOwner extends GenericOAuth2ResourceOwner
         $resolver->setRequired(array('resource'));
 
         $resolver->setDefaults(array(
-            'authorization_url' => 'https://login.windows.net/common/oauth2/authorize',
+            'authorization_url' => 'https://login.windows.net/%s/oauth2/authorize',
             'infos_url' => '%s/api/%s/me',
-            'access_token_url' => 'https://login.windows.net/common/oauth2/token',
+            'access_token_url' => 'https://login.windows.net/%s/oauth2/token',
 
+            'application' => 'common',
             'api_version' => 'v1.0',
             'csrf' => true
         ));
