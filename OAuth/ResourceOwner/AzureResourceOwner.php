@@ -13,6 +13,7 @@ namespace HWI\Bundle\OAuthBundle\OAuth\ResourceOwner;
 
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
+use HWI\Bundle\OAuthBundle\Security\Core\Authentication\Token\OAuthToken;
 use HWI\Bundle\OAuthBundle\OAuth\ResourceOwner\GenericOAuth2ResourceOwner;
 
 /**
@@ -57,6 +58,22 @@ class AzureResourceOwner extends GenericOAuth2ResourceOwner
     public function refreshAccessToken($refreshToken, array $extraParameters = array())
     {
         return parent::refreshAccessToken($refreshToken, $extraParameters + array('resource' => $this->options['resource']));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getUserInformation(array $accessToken, array $extraParameters = array())
+    {
+        $content = $this->httpRequest($this->normalizeUrl($this->options['infos_url']), null, array('Authorization: Bearer '.$accessToken['access_token'], 'Accept: application/json; odata.metadata=none'));
+
+        $response = $this->getUserResponse();
+        $response->setResponse($content->getContent());
+
+        $response->setResourceOwner($this);
+        $response->setOAuthToken(new OAuthToken($accessToken));
+
+        return $response;
     }
 
     /**
