@@ -27,10 +27,10 @@ class AzureResourceOwner extends GenericOAuth2ResourceOwner
      * {@inheritDoc}
      */
     protected $paths = array(
-        'identifier'     => 'MailboxGuid',
-        'nickname'       => 'Alias',
-        'realname'       => 'DisplayName',
-        'email'          => 'Id',
+        'identifier'     => 'sub',
+        'nickname'       => 'unique_name',
+        'realname'       => 'name',
+        'email'          => 'upn',
         'profilepicture' => null,
     );
 
@@ -41,7 +41,6 @@ class AzureResourceOwner extends GenericOAuth2ResourceOwner
     {
         $this->options['access_token_url'] = sprintf($this->options['access_token_url'], $this->options['application']);
         $this->options['authorization_url'] = sprintf($this->options['authorization_url'], $this->options['application']);
-        $this->options['infos_url'] = sprintf($this->options['infos_url'], $this->options['resource'], $this->options['api_version']);
     }
 
     /**
@@ -65,10 +64,31 @@ class AzureResourceOwner extends GenericOAuth2ResourceOwner
      */
     public function getUserInformation(array $accessToken, array $extraParameters = array())
     {
-        $content = $this->httpRequest($this->normalizeUrl($this->options['infos_url']), null, array('Authorization: Bearer '.$accessToken['access_token'], 'Accept: application/json; odata.metadata=none'));
+        // from http://stackoverflow.com/a/28748285/624544
+        list(, $jwt, ) = explode('.', $accessToken['id_token'], 3);
+
+        // if the token was urlencoded, do some fixes to ensure that it is valid base64 encoded
+        $jwt = str_replace('-', '+', $jwt);
+        $jwt = str_replace('_', '/', $jwt);
+
+        // complete token if needed
+        switch (strlen($jwt) % 4) {
+            case 0:
+            break;
+
+            case 2:
+                $jwt .= '=';
+
+            case 3:
+                $jwt .= '=';
+            break;
+
+            default:
+                throw new InvalidArgumentException('Invalid base64 format sent back');
+        }
 
         $response = $this->getUserResponse();
-        $response->setResponse($content->getContent());
+        $response->setResponse(base64_decode($jwt));
 
         $response->setResourceOwner($this);
         $response->setOAuthToken(new OAuthToken($accessToken));
@@ -86,8 +106,8 @@ class AzureResourceOwner extends GenericOAuth2ResourceOwner
         $resolver->setRequired(array('resource'));
 
         $resolver->setDefaults(array(
+            'infos_url' => '',
             'authorization_url' => 'https://login.windows.net/%s/oauth2/authorize',
-            'infos_url' => '%s/api/%s/me',
             'access_token_url' => 'https://login.windows.net/%s/oauth2/token',
 
             'application' => 'common',
