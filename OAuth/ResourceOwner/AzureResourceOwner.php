@@ -30,7 +30,7 @@ class AzureResourceOwner extends GenericOAuth2ResourceOwner
         'identifier'     => 'sub',
         'nickname'       => 'unique_name',
         'realname'       => 'name',
-        'email'          => 'email',
+        'email'          => array('upn', 'email'),
         'profilepicture' => null,
     );
 
