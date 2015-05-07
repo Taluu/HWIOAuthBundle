@@ -14,7 +14,6 @@ namespace HWI\Bundle\OAuthBundle\OAuth\ResourceOwner;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 use HWI\Bundle\OAuthBundle\Security\Core\Authentication\Token\OAuthToken;
-use HWI\Bundle\OAuthBundle\OAuth\ResourceOwner\GenericOAuth2ResourceOwner;
 
 /**
  * AzureResourceOwner
@@ -74,17 +73,17 @@ class AzureResourceOwner extends GenericOAuth2ResourceOwner
         // complete token if needed
         switch (strlen($jwt) % 4) {
             case 0:
-            break;
+                break;
 
             case 2:
                 $jwt .= '=';
 
             case 3:
                 $jwt .= '=';
-            break;
+                break;
 
             default:
-                throw new InvalidArgumentException('Invalid base64 format sent back');
+                throw new \InvalidArgumentException('Invalid base64 format sent back');
         }
 
         $response = $this->getUserResponse();
@@ -116,4 +115,3 @@ class AzureResourceOwner extends GenericOAuth2ResourceOwner
         ));
     }
 }
-
