@@ -19,8 +19,11 @@ class AzureResourceOwnerTest extends GenericOAuth2ResourceOwnerTest
 
     protected $userResponse = <<<json
 {
-    "id":  "1",
-    "foo": "bar"
+    "sub": "1",
+    "given_name": "Dummy",
+    "family_name": "Tester",
+    "name": "Dummy Tester",
+    "unique_name": "dummy123"
 }
 json;
 
@@ -46,8 +49,7 @@ json;
 
     public function testGetUserInformation()
     {
-        $token = base64_encode($this->userResponse) . '.';
-
+        $token = '.' . base64_encode($this->userResponse);
         /**
          * @var $userResponse \HWI\Bundle\OAuthBundle\OAuth\Response\AbstractUserResponse
          */
@@ -56,11 +58,13 @@ json;
             'id_token' =>  $token
         ));
 
-        // can't really test real responses because of the weird id_token value; seems strangely base64 encoded
+        $this->assertEquals('1', $userResponse->getUsername());
+        $this->assertEquals('Dummy Tester', $userResponse->getRealName());
+        $this->assertEquals('dummy123', $userResponse->getNickname());
         $this->assertNull($userResponse->getRefreshToken());
         $this->assertNull($userResponse->getExpiresIn());
     }
-
+    
     public function testCustomResponseClass()
     {
         $this->markTestSkipped('Can\' test custom response because of the way the id_token value is set; is always returning null');
