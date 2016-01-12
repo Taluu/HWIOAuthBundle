@@ -20,7 +20,7 @@ use Symfony\Component\OptionsResolver\Options;
  *
  * @author Adrov Igor <nucleartux@gmail.com>
  * @author Vladislav Vlastovskiy <me@vlastv.ru>
- * @author Alexander Latushkin <alex@skazo4neg.ru> 
+ * @author Alexander Latushkin <alex@skazo4neg.ru>
  */
 class VkontakteResourceOwner extends GenericOAuth2ResourceOwner
 {
@@ -31,7 +31,10 @@ class VkontakteResourceOwner extends GenericOAuth2ResourceOwner
         'identifier' => 'response.0.uid',
         'nickname'   => 'response.0.nickname',
         'profilepicture' => 'response.0.photo_50',
-        'realname'   => array('response.0.last_name', 'response.0.first_name')
+        'firstname'  => 'response.0.first_name',
+        'lastname'   => 'response.0.last_name',
+        'realname'   => array('response.0.last_name', 'response.0.first_name'),
+        'email' => 'email'
     );
 
     /**
@@ -52,6 +55,12 @@ class VkontakteResourceOwner extends GenericOAuth2ResourceOwner
         $response->setResponse($content);
         $response->setResourceOwner($this);
         $response->setOAuthToken(new OAuthToken($accessToken));
+
+        if (isset($accessToken['email'])) {
+            $content = $response->getResponse();
+            $content['email'] = $accessToken['email'];
+            $response->setResponse($content);
+        }
 
         return $response;
     }
@@ -74,14 +83,21 @@ class VkontakteResourceOwner extends GenericOAuth2ResourceOwner
             'name_case'           => null,
         ));
 
-        $resolver->setNormalizers(array(
-            'fields' => function (Options $options, $value) {
-                if (!$value) {
-                    return null;
-                }
+        $fieldsNormalizer = function (Options $options, $value) {
+            if (!$value) {
+                return null;
+            }
 
-                return is_array($value) ? implode(',', $value) : $value;
-            },
-        ));
+            return is_array($value) ? implode(',', $value) : $value;
+        };
+
+        // Symfony <2.6 BC
+        if (method_exists($resolver, 'setNormalizer')) {
+            $resolver->setNormalizer('fields', $fieldsNormalizer);
+        } else {
+            $resolver->setNormalizers(array(
+                'fields' => $fieldsNormalizer,
+            ));
+        }
     }
 }

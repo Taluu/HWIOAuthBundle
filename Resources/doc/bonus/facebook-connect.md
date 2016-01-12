@@ -17,6 +17,8 @@ hwi_oauth:
             client_id:     <client_id>
             client_secret: <client_secret>
             scope:         "email"
+            options:
+                display: popup #dialog is optimized for popup window            
 
 services:
     hwi_oauth.user.provider.entity:
@@ -33,7 +35,7 @@ hwi_oauth_redirect:
     prefix:   /demo/secured/connect
 
 facebook_login:
-    pattern: /demo/secured/login_facebook
+    path: /demo/secured/login_facebook
 ```
 
 ### Configuration of the Security Layer
@@ -119,7 +121,7 @@ The following example bases also on the Facebook ["Login with Javascript SDK"](h
 {% endblock %}
 ```
 
-Make sure `{scope: 'email'}` is added as the second argument to FB.login. Or elsewhere, you would have to prompt the user with the authentification for the basic data, and then ask him again to accept that you need his email.
+Make sure `{scope: 'email'}` is added as the second argument to FB.login. Or elsewhere, you would have to prompt the user with the authentication for the basic data, and then ask him again to accept that you need his email.
 
 ## Watch the results!
 
