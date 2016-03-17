@@ -34,6 +34,7 @@ class Configuration implements ConfigurationInterface
             'auth0',
             'azure',
             'bitbucket2',
+            'azure_v2',
             'bitly',
             'box',
             'bufferapp',
