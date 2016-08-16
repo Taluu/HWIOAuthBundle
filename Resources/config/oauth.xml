@@ -17,8 +17,10 @@
         <parameter key="hwi_oauth.resource_owner.oauth2.class">HWI\Bundle\OAuthBundle\OAuth\ResourceOwner\GenericOAuth2ResourceOwner</parameter>
 
         <parameter key="hwi_oauth.resource_owner.amazon.class">HWI\Bundle\OAuthBundle\OAuth\ResourceOwner\AmazonResourceOwner</parameter>
+        <parameter key="hwi_oauth.resource_owner.asana.class">HWI\Bundle\OAuthBundle\OAuth\ResourceOwner\AsanaResourceOwner</parameter>
         <parameter key="hwi_oauth.resource_owner.auth0.class">HWI\Bundle\OAuthBundle\OAuth\ResourceOwner\Auth0ResourceOwner</parameter>
         <parameter key="hwi_oauth.resource_owner.azure.class">HWI\Bundle\OAuthBundle\OAuth\ResourceOwner\AzureResourceOwner</parameter>
+        <parameter key="hwi_oauth.resource_owner.azure_v2.class">HWI\Bundle\OAuthBundle\OAuth\ResourceOwner\AzureV2ResourceOwner</parameter>
         <parameter key="hwi_oauth.resource_owner.bitbucket.class">HWI\Bundle\OAuthBundle\OAuth\ResourceOwner\BitbucketResourceOwner</parameter>
         <parameter key="hwi_oauth.resource_owner.bitbucket2.class">HWI\Bundle\OAuthBundle\OAuth\ResourceOwner\Bitbucket2ResourceOwner</parameter>
         <parameter key="hwi_oauth.resource_owner.bitly.class">HWI\Bundle\OAuthBundle\OAuth\ResourceOwner\BitlyResourceOwner</parameter>
@@ -33,6 +35,7 @@
         <parameter key="hwi_oauth.resource_owner.dropbox.class">HWI\Bundle\OAuthBundle\OAuth\ResourceOwner\DropboxResourceOwner</parameter>
         <parameter key="hwi_oauth.resource_owner.eve_online.class">HWI\Bundle\OAuthBundle\OAuth\ResourceOwner\EveOnlineResourceOwner</parameter>
         <parameter key="hwi_oauth.resource_owner.eventbrite.class">HWI\Bundle\OAuthBundle\OAuth\ResourceOwner\EventbriteResourceOwner</parameter>
+        <parameter key="hwi_oauth.resource_owner.evernote.class">HWI\Bundle\OAuthBundle\OAuth\ResourceOwner\EvernoteResourceOwner</parameter>
         <parameter key="hwi_oauth.resource_owner.facebook.class">HWI\Bundle\OAuthBundle\OAuth\ResourceOwner\FacebookResourceOwner</parameter>
         <parameter key="hwi_oauth.resource_owner.fiware.class">HWI\Bundle\OAuthBundle\OAuth\ResourceOwner\FiwareResourceOwner</parameter>
         <parameter key="hwi_oauth.resource_owner.flickr.class">HWI\Bundle\OAuthBundle\OAuth\ResourceOwner\FlickrResourceOwner</parameter>

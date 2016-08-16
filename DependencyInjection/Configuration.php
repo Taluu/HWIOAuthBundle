@@ -31,9 +31,11 @@ class Configuration implements ConfigurationInterface
     private static $resourceOwners = array(
         'oauth2' => array(
             'amazon',
+            'asana',
             'auth0',
             'azure',
             'bitbucket2',
+            'azure_v2',
             'bitly',
             'box',
             'bufferapp',
@@ -85,6 +87,7 @@ class Configuration implements ConfigurationInterface
             'bitbucket',
             'discogs',
             'dropbox',
+            'evernote',
             'flickr',
             'jira',
             'stereomood',
